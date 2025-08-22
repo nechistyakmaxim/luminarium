@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUMINARIUM - Биолюминесцентная арена</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        
+        <div id="ui-overlay">
+            <div class="ui-panel score-panel">
+                <div class="score-title">ЭНЕРГИЯ</div>
+                <div class="score-value" id="score">0</div>
+            </div>
+            
+            <div class="ui-panel title-panel">
+                <div class="game-title">LUMINARIUM</div>
+                <div class="game-subtitle">Биолюминесцентная арена</div>
+            </div>
+            
+            <div class="ui-panel controls-panel">
+                <div class="controls-title">УПРАВЛЕНИЕ</div>
+                <ul class="controls-list">
+                    <li>Мышь / Касание - Движение</li>
+                    <li>Пробел / ЛКМ - Ускорение</li>
+                    <li>R - Перезапуск игры</li>
+                </ul>
+            </div>
+            
+            <div class="abilities-panel">
+                <div class="ability" title="Ускорение (Пробел)">⚡</div>
+                <div class="ability" title="Щит (недоступно)">🛡️</div>
+                <div class="ability" title="Взрыв (недоступно)">🌀</div>
+            </div>
+            
+            <div class="size-indicator">
+                Размер: <span id="size">10</span> сегментов
+            </div>
+            
+            <div class="speed-indicator">
+                Скорость: <span id="speed">100%</span>
+            </div>
+            
+            <div class="instructions" id="instructions">
+                Двигайтесь к частицам, чтобы поглощать энергию и расти.<br>
+                Столкновение с меньшими врагами - поглощение, с большими - смерть!<br>
+                Чем больше вы становитесь, тем медленнее двигаетесь.<br><br>
+                Наведите курсор и кликните для начала игры
+            </div>
+            
+            <div class="game-over" id="game-over">
+                <h2>ENERGY COLLAPSE</h2>
+                <p>Вас поглотило более крупное существо!</p>
+                <p>Собрано энергии: <span id="final-score">0</span></p>
+                <button class="restart-btn" id="restart-btn">ВОЗРОДИТЬСЯ</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
