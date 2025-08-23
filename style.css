@@ -1,8 +1,19 @@
+/* Обнуление и базовые стили */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Arial', sans-serif;
+}
+
+/* Отключение выделения текста */
+* {
+    user-select: none;
+}
+
+button, .ability, .cell, .restart-btn, .ui-panel * {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 body {
@@ -15,18 +26,22 @@ body {
     align-items: center;
 }
 
+/* Основной контейнер игры */
 #game-container {
     position: relative;
     width: 100%;
-    max-width: 1200px;
+    max-width: 100%;
     height: 100vh;
-    max-height: 800px;
+    max-height: 100vh;
     overflow: hidden;
     border-radius: 12px;
     box-shadow: 0 0 50px rgba(0, 200, 255, 0.3);
+    background: #0a0a2a;
 }
 
-#game-canvas {
+/* Canvas и UI слои */
+#game-canvas,
+#ui-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -36,102 +51,115 @@ body {
 }
 
 #ui-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
     z-index: 2;
     pointer-events: none;
 }
 
+/* Универсальная панель */
 .ui-panel {
-    position: absolute;
-    background: rgba(10, 20, 40, 0.7);
+    background: rgba(10, 20, 40, 0.85);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* Safari */
     border: 1px solid rgba(0, 200, 255, 0.4);
     border-radius: 12px;
-    padding: 15px;
+    padding: 12px 16px;
     box-shadow: 0 0 25px rgba(0, 200, 255, 0.2);
+    pointer-events: auto;
+    min-width: 120px;
+    font-size: clamp(12px, 4vw, 14px);
 }
 
+/* Панель счётчика (сверху слева) */
 .score-panel {
-    top: 20px;
-    left: 20px;
-    min-width: 180px;
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    max-width: 45%;
 }
 
 .score-title {
-    font-size: 14px;
+    font-size: 13px;
     color: #00c8ff;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
 
 .score-value {
-    font-size: 28px;
+    font-size: clamp(20px, 5vw, 28px);
     font-weight: 700;
     color: #ffffff;
     text-shadow: 0 0 10px rgba(0, 200, 255, 0.7);
 }
 
+/* Панель управления (снизу справа) */
 .controls-panel {
-    bottom: 20px;
-    right: 20px;
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
     text-align: right;
-    pointer-events: auto;
+    max-width: 45%;
 }
 
 .controls-title {
-    font-size: 14px;
+    font-size: 13px;
     color: #00c8ff;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .controls-list {
     list-style: none;
-    font-size: 13px;
+    font-size: clamp(11px, 3.5vw, 13px);
     color: #a0e5ff;
+    line-height: 1.4;
 }
 
 .controls-list li {
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
 
+/* Заголовок игры (сверху справа) */
 .title-panel {
-    top: 20px;
-    right: 20px;
+    position: absolute;
+    top: 12px;
+    right: 12px;
     text-align: right;
-    padding: 15px;
+    max-width: 50%;
+    padding: 12px;
 }
 
 .game-title {
-    font-size: 32px;
+    font-size: clamp(20px, 5vw, 32px);
     font-weight: 800;
     color: transparent;
     background: linear-gradient(45deg, #00c8ff, #00ffaa, #7700ff);
     -webkit-background-clip: text;
     background-clip: text;
-    margin-bottom: 5px;
-    letter-spacing: 2px;
-}
-
-.game-subtitle {
-    font-size: 14px;
-    color: #88d0ff;
+    margin-bottom: 4px;
     letter-spacing: 1px;
 }
 
+.game-subtitle {
+    font-size: clamp(12px, 3.5vw, 14px);
+    color: #88d0ff;
+    letter-spacing: 0.5px;
+}
+
+/* Панель способностей (круглые кнопки) */
 .abilities-panel {
-    bottom: 20px;
-    left: 20px;
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
     display: flex;
-    gap: 15px;
+    gap: 12px;
     pointer-events: auto;
+    flex-wrap: wrap;
+    max-width: calc(100% - 32px);
 }
 
 .ability {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    min-height: 50px;
     border-radius: 50%;
     background: rgba(0, 40, 80, 0.6);
     border: 2px solid rgba(0, 200, 255, 0.5);
@@ -139,33 +167,36 @@ body {
     align-items: center;
     justify-content: center;
     color: #00c8ff;
-    font-size: 24px;
+    font-size: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.ability:hover {
+.ability:hover,
+.ability:active {
     transform: scale(1.1);
     background: rgba(0, 80, 160, 0.7);
     box-shadow: 0 0 15px rgba(0, 200, 255, 0.5);
 }
 
+/* Подсказка (на весь экран) */
 .instructions {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    background: rgba(0, 30, 60, 0.8);
-    padding: 20px 30px;
+    background: rgba(0, 30, 60, 0.9);
+    padding: 16px 24px;
     border-radius: 12px;
     border: 2px solid rgba(0, 180, 255, 0.5);
-    font-size: 18px;
+    font-size: clamp(14px, 4vw, 18px);
     color: #a0e5ff;
     pointer-events: none;
     animation: pulse 3s infinite;
     z-index: 10;
-    max-width: 80%;
+    max-width: 90%;
+    box-shadow: 0 0 20px rgba(0, 200, 255, 0.4);
 }
 
 @keyframes pulse {
@@ -174,6 +205,7 @@ body {
     100% { opacity: 0.7; box-shadow: 0 0 20px rgba(0, 200, 255, 0.3); }
 }
 
+/* Экран окончания игры */
 .game-over {
     display: none;
     position: absolute;
@@ -181,24 +213,26 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    background: rgba(0, 20, 40, 0.9);
-    padding: 30px;
+    background: rgba(0, 20, 40, 0.95);
+    padding: 24px;
     border-radius: 15px;
     border: 2px solid rgba(255, 50, 50, 0.5);
     z-index: 20;
     pointer-events: auto;
+    width: 80%;
+    max-width: 350px;
 }
 
 .game-over h2 {
-    font-size: 36px;
+    font-size: clamp(24px, 6vw, 36px);
     color: #ff3366;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     text-shadow: 0 0 15px rgba(255, 50, 100, 0.7);
 }
 
 .game-over p {
-    font-size: 20px;
-    margin-bottom: 25px;
+    font-size: clamp(14px, 4vw, 20px);
+    margin-bottom: 20px;
     color: #a0e5ff;
 }
 
@@ -206,43 +240,44 @@ body {
     background: linear-gradient(45deg, #ff3366, #ff00aa);
     border: none;
     border-radius: 8px;
-    padding: 12px 30px;
+    padding: 12px 24px;
     color: white;
-    font-size: 18px;
+    font-size: clamp(14px, 4.5vw, 18px);
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
+    min-width: 120px;
 }
 
-.restart-btn:hover {
+.restart-btn:hover,
+.restart-btn:active {
     transform: scale(1.05);
     box-shadow: 0 0 20px rgba(255, 0, 100, 0.7);
 }
 
-.size-indicator {
+/* Индикаторы (размер и скорость) */
+.size-indicator,
+.speed-indicator {
     position: absolute;
-    bottom: 100px;
-    left: 20px;
+    left: 12px;
     background: rgba(0, 30, 60, 0.7);
-    padding: 10px 15px;
+    padding: 8px 12px;
     border-radius: 8px;
     border: 1px solid rgba(0, 180, 255, 0.4);
-    font-size: 14px;
+    font-size: 12px;
     color: #a0e5ff;
+    white-space: nowrap;
+}
+
+.size-indicator {
+    bottom: 80px;
 }
 
 .speed-indicator {
-    position: absolute;
-    bottom: 150px;
-    left: 20px;
-    background: rgba(0, 30, 60, 0.7);
-    padding: 10px 15px;
-    border-radius: 8px;
-    border: 1px solid rgba(0, 180, 255, 0.4);
-    font-size: 14px;
-    color: #a0e5ff;
+    bottom: 110px;
 }
 
+/* Эффект столкновения */
 .collision-effect {
     position: absolute;
     border-radius: 50%;
